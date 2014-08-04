@@ -1,0 +1,4 @@
+bgstatsclient
+=============
+
+Client for bgstats
