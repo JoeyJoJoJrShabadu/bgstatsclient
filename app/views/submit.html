@@ -1,0 +1,64 @@
+<div class="container">
+	<h2>Submit a game</h2>
+	<h4>Details</h4>
+	<form name="submitForm" novalidate>
+	  <div class="form-group" show-errors>
+	    <label for="gameInput">Game</label>
+		<input type="text" id="gameInput" auto-complete ui-items="names" ng-model="gameinstance.game" placeholder="Name of game..." class="form-control" required>
+	  </div>
+	  <div class="form-group" show-errors>
+	    <label for="locationInput">Location</label>
+		<input type="text" if="locationInput" ng-model="gameinstance.location" placeholder="Location of game..." class="form-control" required>
+	  </div>
+	  <div class="form-group">
+	    <label for="photoFile">Photo</label>
+	    <input type="file" id="photoFile">
+	    <p class="help-block">Optional photo...</p>
+	  </div>
+	  <div class = "row">
+	    <div class="col-md-6">
+	      <p class="input-group">
+	        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="dt" is-open="opened" />
+	        <span class="input-group-btn">
+	          <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+	        </span>
+	      </p>
+	    </div>
+	  </div>
+	  </div>
+	
+	<h4>Placings</h4>
+	<form role="form" ng-submit="addPlayer()">
+	  <div class="row">
+	    <div class="input-group"> 
+	      <div class="col-md-6"><input type="text" ng-model="newPlayer" placeholder="Player name.." class="form-control" required></div>
+	      <div class="col-md-2"><input type="text" ng-model="newScore" placeholder="Score" class="form-control"></div>
+	   	  <div class="col-md-2">
+	   	  <span class="input-group-btn">
+	   	    <input type="submit" class="btn btn-primary" value="Add">
+	   	  </span>
+	   	  </div>
+	   	</div>
+	  </div>  
+	</form>
+	<p></p>
+	<br>
+	<div class="row">
+	  <div class="col-md-1"><h4>Place</h4></div>
+	  <div class="col-md-4"><h4>Name</h4></div>
+	  <div class="col-md-2"><h4>Score</h4></div>
+	</div>
+	<div ui-sortable ng-model="players">
+	  <div class="row" ng-repeat="player in players" style="cursor:move; padding:5px 10px;">
+		<div class="col-md-1">{{$index + 1}}</div>
+		<div class="col-md-4"><input type="text" disabled ng-model="player.name" class="form-control"></div>
+		<div class="col-md-2"><input type="text" ng-model="player.score" class="form-control"></div>
+		<div class="col-md-2"><span class="input-group-btn">
+			<button class="btn btn-danger" ng-click="removePlayer($index)" aria-label="Remove">X</button>
+		</span>
+		</div>
+	  </div>
+	</div>
+	<button class="btn btn-primary" ng-click="submitGame()" aria-label="Submit">Submit</button>
+	</form>
+</div>
