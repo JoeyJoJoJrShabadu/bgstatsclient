@@ -1,4 +1,0 @@
-bgstatsclient
-=============
-
-Client for bgstats
