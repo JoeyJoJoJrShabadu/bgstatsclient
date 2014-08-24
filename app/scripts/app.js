@@ -18,7 +18,7 @@ angular
     'ngTouch',
     'ui.sortable',
     'ui.bootstrap',
-    'restangular'
+    'restangular',
   ])
   .config(function ($routeProvider) {
     $routeProvider

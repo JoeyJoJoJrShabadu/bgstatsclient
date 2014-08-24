@@ -4,11 +4,11 @@
 	<form name="submitForm" novalidate>
 	  <div class="form-group" show-errors>
 	    <label for="gameInput">Game</label>
-		<input type="text" id="gameInput" auto-complete ui-items="names" ng-model="gameinstance.game" placeholder="Name of game..." class="form-control" required>
+		  <input type="text" id="gameInput" typeahead-min-length="2" typeahead="game.name for game in allGames | filter:$viewValue | limitTo:8" ng-model="gameinstance.boardgame" placeholder="Name of game..." class="form-control" required>
 	  </div>
 	  <div class="form-group" show-errors>
 	    <label for="locationInput">Location</label>
-		<input type="text" if="locationInput" ng-model="gameinstance.location" placeholder="Location of game..." class="form-control" required>
+		<input type="text" id="locationInput" typeahead-min-length="2" typeahead="loc.name for loc in allLocations | filter:$viewValue | limitTo:8" ng-model="gameinstance.location" placeholder="Location of game..." class="form-control" required>
 	  </div>
 	  <div class="form-group">
 	    <label for="photoFile">Photo</label>
@@ -28,14 +28,14 @@
 	  </div>
 	
 	<h4>Placings</h4>
-	<form role="form" ng-submit="addPlayer()">
+	<form role="form">
 	  <div class="row">
 	    <div class="input-group"> 
-	      <div class="col-md-6"><input type="text" ng-model="newPlayer" placeholder="Player name.." class="form-control" required></div>
+	      <div class="col-md-6"><input type="text" typeahead-min-length="1" typeahead="player.name for player in allPlayers | filter:$viewValue | limitTo:8" ng-model="newPlayer" placeholder="Player name.." class="form-control" required></div>
 	      <div class="col-md-2"><input type="text" ng-model="newScore" placeholder="Score" class="form-control"></div>
 	   	  <div class="col-md-2">
 	   	  <span class="input-group-btn">
-	   	    <input type="submit" class="btn btn-primary" value="Add">
+	   	    <input type="submit" class="btn btn-primary" ng-click="addPlayer()" value="Add">
 	   	  </span>
 	   	  </div>
 	   	</div>
@@ -49,16 +49,24 @@
 	  <div class="col-md-2"><h4>Score</h4></div>
 	</div>
 	<div ui-sortable ng-model="players">
-	  <div class="row" ng-repeat="player in players" style="cursor:move; padding:5px 10px;">
+	  <div class="row" ng-repeat="playerscore in playerScores" style="cursor:move; padding:5px 10px;">
 		<div class="col-md-1">{{$index + 1}}</div>
-		<div class="col-md-4"><input type="text" disabled ng-model="player.name" class="form-control"></div>
-		<div class="col-md-2"><input type="text" ng-model="player.score" class="form-control"></div>
+		<div class="col-md-4"><input type="text" disabled ng-model="playerscore.player.name" class="form-control"></div>
+		<div class="col-md-2"><input type="text" ng-model="playerscore.score" class="form-control"></div>
 		<div class="col-md-2"><span class="input-group-btn">
 			<button class="btn btn-danger" ng-click="removePlayer($index)" aria-label="Remove">X</button>
 		</span>
 		</div>
 	  </div>
 	</div>
+	<br>
 	<button class="btn btn-primary" ng-click="submitGame()" aria-label="Submit">Submit</button>
 	</form>
+	<br>
+	<div class="alert alert-success" ng-show="success">
+        <button type="button" class="close" data-ng-click="switchBool('success')">×</button> <strong>Done!</strong> {{successText}}</div>
+  </div>
+	<div class="alert alert-danger" ng-show="error">
+        <button type="button" class="close" data-ng-click="switchBool('error')">×</button> <strong>Error!</strong> {{errorText}}</div>
+  </div>
 </div>
