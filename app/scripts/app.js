@@ -19,6 +19,7 @@ angular
     'ui.sortable',
     'ui.bootstrap',
     'restangular',
+    'ngTable'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -37,6 +38,10 @@ angular
       .when('/submit', {
         templateUrl: 'views/submit.html',
         controller: 'SubmitCtrl'
+      }) 
+      .when('/history', {
+        templateUrl: 'views/history.html',
+        controller: 'HistoryCtrl'
       }) 
       .otherwise({
         redirectTo: '/'

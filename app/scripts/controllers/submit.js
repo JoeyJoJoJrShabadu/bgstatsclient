@@ -10,7 +10,6 @@
 angular.module('bgcApp')
   .controller('SubmitCtrl', function ($scope, Restangular) {
     $scope.names = ['john', 'bill', 'charlie', 'robert', 'adrian'];	
-    $scope.playerScores = [];
   	var basePlayers = Restangular.all('players/');
   	var basePlayerScores = Restangular.all('playerscores/')
   	var basePlayerPlaces = Restangular.all('playerplaces/')
@@ -19,6 +18,10 @@ angular.module('bgcApp')
   	var baseInstance = Restangular.all('gameinstances/');
   	
   	$scope.refresh = function() {
+  		$scope.players = [];
+  		$scope.playerSorted = [];
+      $scope.playerScores = [];
+      $scope.playerPlaces = [];
   		$scope.gameinstance = {};
   		$scope.success = false;
 			$scope.error = false;
@@ -28,6 +31,7 @@ angular.module('bgcApp')
       $scope.newScore = '';
   		
   		$scope.dt = new Date();
+  		
 	  	basePlayers.getList().then(function(players) {
 	  	  $scope.allPlayers = players;
 	  	});
@@ -45,22 +49,19 @@ angular.module('bgcApp')
   	
   	$scope.submitGame = function() {
   		$scope.gameinstance.playerplace = [];
-  		$scope.gameinstance.playerscore = $scope.playerScores;
-  		$scope.gameinstance.date = $scope.dt.toJSON();
-  		var idx = 1;
+  		$scope.gameinstance.playerscore = [];
+  		$scope.gameinstance.date = $scope.dt.toJSON().substring(0,10);
   		
-  		$scope.playerScores.map(function(i)
-  		{
-  			var newPlayerPlace = {player:i.player, place:idx};
-  	    $scope.gameinstance.playerplace.push(newPlayerPlace);
-  			idx += 1;
-  		});
-  		
+  	  for (var i = 0; i < $scope.players.length; i++) {
+  	    $scope.gameinstance.playerplace.push({player:$scope.players[i].player, place:$scope.players[i].place});
+ 	      $scope.gameinstance.playerscore.push({player:$scope.players[i].player, score:$scope.players[i].score});
+  	  }
+  	
   		baseInstance.post($scope.gameinstance).then(function(newGI) {
   			$scope.success = true;
   			$scope.error = false;
   			$scope.successText = newGI.boardgame + " at " + newGI.location + " on " + newGI.date + " submitted";
-  			$scope.playerScores = [];
+  			$scope.players = [];
   			$scope.gameinstance = {};
   			
   		}, function(response) {
@@ -76,20 +77,31 @@ angular.module('bgcApp')
   		$scope.opened = true;
   	};
   	
-    $scope.addPlayerScore = function(newPlayer, newScore) {
+    $scope.addNewPlayer = function(newPlayer, newScore) {
   	  var newPlayerScore = {player:newPlayer, score:newScore};
-		    $scope.playerScores.push(newPlayerScore);
+		    $scope.players.push(newPlayerScore);
+		    $scope.playerSorted.push(newPlayerScore);
     };
 	 
 	   $scope.addPlayer = function(){
-	  	 $scope.addPlayerScore({name:$scope.newPlayer}, $scope.newScore);
+	  	 $scope.addNewPlayer({name:$scope.newPlayer}, $scope.newScore);
 	     $scope.newPlayer = '';
 	     $scope.newScore = '';
 		 };
 		  
-	 $scope.removePlayer = function(index) {
-		 $scope.players.splice(index, 1);
-	 };
+	   $scope.removePlayer = function(index) {
+		   $scope.playerSorted.splice(index, 1);
+	   };
+	   
+	   $scope.$watch('playerSorted', function (value) {
+	  	 var idx = 1;
+	  	 $scope.players = [];
+	  	 $scope.playerSorted.map(function(i) {
+         $scope.players.push({player:i.player, place:idx, score:i.score})
+	  	   idx += 1;
+	  	 });
+	  	 console.log(value);
+	   }, true);
 });
   
 

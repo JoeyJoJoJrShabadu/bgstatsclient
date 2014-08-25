@@ -13,7 +13,7 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.min.css">
+    <link rel="stylesheet" href="bower_components/ng-table/ng-table.css">
     <!-- endbuild -->
   </head>
   <body ng-app="bgcApp">
@@ -26,12 +26,13 @@
       <div class="header">
         <ul class="nav nav-pills pull-right" ng-controller="NavCtrl">
           <li ng-class="navClass('home')"><a href="#">Home</a></li>
-          <li ng-class="navClass('stats')"><a href="#/stats">Stats</a></li>
           <li ng-class="navClass('submit')"><a href="#/submit">Submit</a></li>
+          <li ng-class="navClass('stats')"><a href="#/stats">Stats</a></li>
+          <li ng-class="navClass('history')"><a href="#/history">History</a></li>
           <li ng-class="navClass('about')"><a href="#/about">About</a></li>
           <li ng-class="navClass('contact')"><a href="#">Contact</a></li>
         </ul>
-        <h3 class="text-muted">bgc</h3>
+        <h3 class="text-muted">BGStats!</h3>
       </div>
 
       <div ng-view=""></div>
@@ -67,6 +68,7 @@
     <script src="bower_components/lodash/dist/lodash.compat.js"></script>
     <script src="bower_components/restangular/dist/restangular.js"></script>
     <!-- endbower -->
+    <script src="bower_components/ng-table/ng-table.js"></script>
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -75,7 +77,8 @@
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/stats.js"></script>
         <script src="scripts/controllers/submit.js"></script>
-	<script src="scripts/controllers/nav.js"></script>
+				<script src="scripts/controllers/nav.js"></script>
+				<script src="scripts/controllers/history.js"></script>
         <!-- endbuild -->
 </body>
 </html>

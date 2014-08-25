@@ -48,9 +48,9 @@
 	  <div class="col-md-4"><h4>Name</h4></div>
 	  <div class="col-md-2"><h4>Score</h4></div>
 	</div>
-	<div ui-sortable ng-model="players">
-	  <div class="row" ng-repeat="playerscore in playerScores" style="cursor:move; padding:5px 10px;">
-		<div class="col-md-1">{{$index + 1}}</div>
+	<div ui-sortable ng-model="playerSorted">
+	  <div class="row" ng-repeat="playerscore in players" style="cursor:move; padding:5px 10px;">
+		<div class="col-md-2"><input type="text" ng-model="playerscore.place" class="form-control"></div>
 		<div class="col-md-4"><input type="text" disabled ng-model="playerscore.player.name" class="form-control"></div>
 		<div class="col-md-2"><input type="text" ng-model="playerscore.score" class="form-control"></div>
 		<div class="col-md-2"><span class="input-group-btn">
