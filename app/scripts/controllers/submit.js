@@ -7,8 +7,23 @@
  * # SubmitCtrl
  * Controller of the bgcApp
  */
-angular.module('bgcApp')
-  .controller('SubmitCtrl', function ($scope, Restangular) {
+var module = angular.module('bgcApp')
+module.directive('file', function(){
+    return {
+        scope: {
+            file: '='
+        },
+        link: function(scope, el, attrs){
+            el.bind('change', function(event){
+                var files = event.target.files;
+                var file = files[0];
+                scope.file = file ? file.name : undefined;
+                scope.$apply();
+            });
+        }
+    };
+});
+module.controller('SubmitCtrl', function ($scope, Restangular) {
     $scope.names = ['john', 'bill', 'charlie', 'robert', 'adrian'];	
   	var basePlayers = Restangular.all('players/');
   	var basePlayerScores = Restangular.all('playerscores/')
@@ -47,17 +62,31 @@ angular.module('bgcApp')
   	
   	$scope.refresh();
   	
+  	$scope.getFile = function() {
+  		fileReader = new FileReader();
+  	};
+  	
   	$scope.submitGame = function() {
   		$scope.gameinstance.playerplace = [];
   		$scope.gameinstance.playerscore = [];
+  		$scope.gameinstance.playerorder = [];
   		$scope.gameinstance.date = $scope.dt.toJSON().substring(0,10);
   		
   	  for (var i = 0; i < $scope.players.length; i++) {
   	    $scope.gameinstance.playerplace.push({player:$scope.players[i].player, place:$scope.players[i].place});
- 	      $scope.gameinstance.playerscore.push({player:$scope.players[i].player, score:$scope.players[i].score});
-  	  }
-  	
-  		baseInstance.post($scope.gameinstance).then(function(newGI) {
+  	    $scope.gameinstance.playerorder.push({player:$scope.players[i].player, order:$scope.players[i].order});
+ 	      if ($scope.players[i].score != "") {
+ 	      	$scope.gameinstance.playerscore.push({player:$scope.players[i].player, score:$scope.players[i].score});
+ 	      }
+ 	    }
+  	  var fd = new FormData();
+  	  fd.append("gi", angular.toJson($scope.gameinstance));
+  	  fd.append("file", 'test');
+  	  baseInstance.withHttpConfig({transformRequest: angular.identity}).customPOST(fd,
+  	  												'',
+  	  												undefined,
+  	  												{'Content-Type':undefined}).then(function(newGI) {
+  		//baseInstance.post($scope.gameinstance).then(function(newGI) {
   			$scope.success = true;
   			$scope.error = false;
   			$scope.successText = newGI.boardgame + " at " + newGI.location + " on " + newGI.date + " submitted";
@@ -77,16 +106,16 @@ angular.module('bgcApp')
   		$scope.opened = true;
   	};
   	
-    $scope.addNewPlayer = function(newPlayer, newScore) {
-  	  var newPlayerScore = {player:newPlayer, score:newScore};
-		    $scope.players.push(newPlayerScore);
+    $scope.addNewPlayer = function(newPlayer, newScore, newPlace) {
+  	  var newPlayerScore = {player:newPlayer, score:newScore, place:newPlace};
 		    $scope.playerSorted.push(newPlayerScore);
     };
 	 
 	   $scope.addPlayer = function(){
-	  	 $scope.addNewPlayer({name:$scope.newPlayer}, $scope.newScore);
+	  	 $scope.addNewPlayer({name:$scope.newPlayer}, $scope.newScore, $scope.newPlace);
 	     $scope.newPlayer = '';
 	     $scope.newScore = '';
+	     $scope.newPlace = '';
 		 };
 		  
 	   $scope.removePlayer = function(index) {
@@ -97,10 +126,9 @@ angular.module('bgcApp')
 	  	 var idx = 1;
 	  	 $scope.players = [];
 	  	 $scope.playerSorted.map(function(i) {
-         $scope.players.push({player:i.player, place:idx, score:i.score})
+         $scope.players.push({player:i.player, place:i.place, score:i.score, order:idx})
 	  	   idx += 1;
 	  	 });
-	  	 console.log(value);
 	   }, true);
 });
   

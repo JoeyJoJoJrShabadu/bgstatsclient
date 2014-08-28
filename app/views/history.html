@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row">
+	  <div class="input-group">
+	    <div class="col-md-2"><label for="filterType">Filter:</label></div>
+	    <div class="col-md-4"><select id="filterType" ng-model="filterType" ng-options="filter.name for filter in filterTypes" class="form-control"></select></div>
+	    <div class="col-md-4"><select ng-model="filterText" ng-options="ft.name for ft in filterValues" class="form-control"></select></div>
+	  	<div class="col-md-2"><span class="input-group-btn">
+			<button class="btn btn-danger" ng-click="removeFilter()" aria-label="Remove">X</button>
+		</span></div>
+	  </div>
+	</div>  
+	<br>
+  <table ng-table="tableParams" class="table">
+    <tr ng-repeat="gi in allGames">
+      <td data-title="'Date'" sortable="'date'">
+        {{gi.date}}
+      </td>
+      <td data-title="'Game'" sortable="'boardgame'">
+          {{gi.boardgame}}
+      </td>
+      <td data-title="'Location'" sortable="'location'">
+		      {{gi.location}}
+      </td>
+      <td data-title="'Scores'">
+          <pre>{{gi.scores}}</pre>
+      </td>
+      <td data-title="'Placings'">
+          <pre>{{gi.places}}</pre>
+      </td>
+      </tr>
+  </table>
+<div>	
