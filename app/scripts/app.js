@@ -43,10 +43,33 @@ angular
         templateUrl: 'views/history.html',
         controller: 'HistoryCtrl'
       }) 
+      .when('/auth', {
+        templateUrl: 'views/auth.html',
+        controller: 'AuthCtrl'
+      }) 
       .otherwise({
         redirectTo: '/'
       });
   })
   .config(function(RestangularProvider) {
     RestangularProvider.setBaseUrl('http://127.0.0.1:8000/bg');
-  });
+  })
+  .config(['$httpProvider', function($httpProvider){
+		$httpProvider.defaults.xsrfCookieName = 'csrftoken';
+		$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+	}])
+	.factory('api', function($resource){
+		function add_auth_header(data, headersGetter){
+			var headers = headersGetter();
+			headers['Authorization'] = ('Basic ' + btoa(data.username + ':' + data.password));
+		}
+		return {
+			auth: $resource('http://127.0.0.1:8000/api/auth\\/', {}, {
+				login: {method: 'POST', transformRequest: add_auth_header},
+				logout: {method: 'DELETE'}
+			}),
+			users: $resource('http://127.0.0.1:8000/api/users\\/', {}, {
+				create: {method: 'POST'}
+			})
+		};
+	});

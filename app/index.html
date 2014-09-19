@@ -31,6 +31,7 @@
           <li ng-class="navClass('history')"><a href="#/history">History</a></li>
           <li ng-class="navClass('about')"><a href="#/about">About</a></li>
           <li ng-class="navClass('contact')"><a href="#">Contact</a></li>
+          <li ng-class="navClass('auth')"><a href="#/auth">Auth</a></li>
         </ul>
         <h3 class="text-muted">BGStats!</h3>
       </div>
@@ -69,6 +70,7 @@
     <script src="bower_components/restangular/dist/restangular.js"></script>
     <!-- endbower -->
     <script src="bower_components/ng-table/ng-table.js"></script>
+    <script src="bower_components/autofill-event/src/autofill-event.js"></script>
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -79,6 +81,7 @@
         <script src="scripts/controllers/submit.js"></script>
 				<script src="scripts/controllers/nav.js"></script>
 				<script src="scripts/controllers/history.js"></script>
+			  <script src="scripts/controllers/auth.js"></script>	
         <!-- endbuild -->
 </body>
 </html>

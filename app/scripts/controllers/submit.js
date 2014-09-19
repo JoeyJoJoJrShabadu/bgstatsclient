@@ -47,15 +47,15 @@ module.controller('SubmitCtrl', function ($scope, Restangular) {
   		
   		$scope.dt = new Date();
   		
-	  	basePlayers.getList().then(function(players) {
+	  	basePlayers.withHttpConfig().getList().then(function(players) {
 	  	  $scope.allPlayers = players;
 	  	});
 	  	
-	  	baseGames.getList().then(function(games) {
+	  	baseGames.withHttpConfig().getList().then(function(games) {
 	  	  $scope.allGames = games;
 	  	});
 	
-	  	baseLocations.getList().then(function(locations) {
+	  	baseLocations.withHttpConfig().getList().then(function(locations) {
 	  	  $scope.allLocations = locations;
 	  	});
   	}
